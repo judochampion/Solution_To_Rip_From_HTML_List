@@ -1,0 +1,174 @@
+!(function (e, d) {
+  const t = requestAnimationFrame || mozRequestAnimationFrame || webkitRequestAnimationFrame || msRequestAnimationFrame;
+  t
+    ? t(function () {
+        e.setTimeout(a, 0);
+      })
+    : e.addEventListener('load', a);
+  const i = {
+    selectors: { root: '.optinWidgetRoot', form: '.optinWidget', inputField: '.inputGroup__input', formField: 'input[name]' },
+    classes: {
+      form: 'optinWidget',
+      inputGroup: 'inputGroup',
+      isValid: 'is-valid',
+      isInValid: 'is-invalid',
+      hasError: 'optinWidget--hasError',
+      hasSubscribed: 'optinWidget--hasSubscribed',
+    },
+    widget: {
+      formAttribute: 'data-widget',
+      dataset: 'widget',
+    },
+  };
+  const n = {};
+  const r = { externalStyleSheets: [] };
+  var a = function () {
+    if (((n.root = d.querySelectorAll(i.selectors.root)), n.root.length)) o();
+  };
+  var o = function () {
+    let e;
+    for (e = 0; e < n.root.length; e++)
+      !(function (e) {
+        const t = n.root[e];
+        const a = JSON.parse(t.dataset[i.widget.dataset]);
+        t.removeAttribute(i.widget.formAttribute),
+          a.stylesheetUrl && a.stylesheetUrl !== '' && r.externalStyleSheets.indexOf(a.stylesheetUrl) === -1
+            ? (r.externalStyleSheets.push(a.stylesheetUrl),
+              s(a.stylesheetUrl, !0, function () {
+                l(t, a, e);
+              }))
+            : l(t, a, e);
+      })(e);
+  };
+  var l = function (e, t, a) {
+    let n;
+    const r = u(t);
+    for (n = 0; n < t.fields.length; n++) r.appendChild(c(t.fields[n], a));
+    r.appendChild(h(t)), r.appendChild(f(t)), r.appendChild(v(t, 'error')), r.appendChild(v(t, 'success')), e.appendChild(r);
+  };
+  var u = function (e) {
+    const t = d.createElement('FORM');
+    return (
+      t.setAttribute('action', e.action),
+      t.setAttribute('method', e.method),
+      (t.className = i.classes.form),
+      t.addEventListener('submit', function (e) {
+        e.preventDefault(), g(e);
+      }),
+      t
+    );
+  };
+  var c = function (e, t) {
+    const a = d.createElement('DIV');
+    return (a.className = i.classes.inputGroup), a.appendChild(m(e, t)), a;
+  };
+  var m = function (e, t) {
+    const a = d.createElement('INPUT');
+    if (
+      ((a.id = `for-${t}-${e.name}`),
+      (a.className = 'inputGroup__input'),
+      (a.name = e.name),
+      (a.type = e.type),
+      (a.value = e.value),
+      (a.placeholder = e.placeholder),
+      e.required === 'true' && ((a.required = !0), a.setAttribute('aria-required', !0)),
+      e.description && e.description !== '' && a.setAttribute('aria-describedby', `aria-describedby-${t}-${e.name}`),
+      e.pattern && e.pattern !== '' && a.setAttribute('pattern', e.pattern),
+      a.addEventListener('input', function (e) {
+        e.preventDefault(), b(e.target, !1), E(e.target);
+      }),
+      a.addEventListener('blur', function (e) {
+        e.preventDefault(), b(e.target, !0);
+      }),
+      a.required || a.value)
+    )
+      try {
+        setTimeout(function () {
+          b(a, !1);
+        }, 0);
+      } catch (e) {}
+    const w = document.createElement('LABEL');
+    //w.setAttribute('for', a.id);
+    w.innerHTML = '<span>' + e.name + '</span>'; // Insert text
+    w.appendChild(a);
+    return w;
+  };
+  var h = function (e) {
+    const t = d.createElement('INPUT');
+    return (t.type = 'hidden'), (t.name = 'optins'), (t.value = e.optins), t;
+  };
+  var f = function (e) {
+    const t = d.createElement('BUTTON');
+    (t.type = 'submit'), (t.className = 'optinWidget__button');
+    let a;
+    const n = d.createElement('DIV');
+    for (n.className = 'optinWidget__loading', a = 0; a < 3; a++) {
+      const r = d.createElement('DIV');
+      (r.className = `loading__bounce loading__bounce--${a + 1}`), r.setAttribute('aria-hidden', !0), n.appendChild(r);
+    }
+    const i = d.createElement('SPAN');
+    (i.className = 'loading__text'), (i.textContent = e.submitButtonTextSending), n.appendChild(i), t.appendChild(n);
+    const s = d.createElement('DIV');
+    (s.className = 'optinWidget__subscribed'), s.setAttribute('aria-hidden', !0), t.appendChild(s);
+    const o = d.createElement('SPAN');
+    return (o.className = 'optinWidget__button-text'), (o.textContent = e.submitButtonText), t.appendChild(o), t;
+  };
+  var v = function (e, t) {
+    const a = d.createElement('P');
+    return (a.className = `optinWidget__${t}`), a.setAttribute('role', 'alert'), (a.textContent = e[t]), a;
+  };
+  var g = function (e) {
+    if (
+      (!e.target.dataset.resolved || e.target.dataset.resolved !== 'true') &&
+      (!e.target.dataset.pending || e.target.dataset.pending !== 'true') &&
+      ((e.target.dataset.pending = !0), y(e.target))
+    ) {
+      const t = e.target.action;
+      const a = e.target.method;
+      const n = _(e.target);
+      const r = new XMLHttpRequest();
+      r.addEventListener('readystatechange', function () {
+        this.readyState === 4 &&
+          (this.status === 200 &&
+            (e.target.reset(),
+            e.target.classList.remove(i.classes.hasError),
+            e.target.classList.add(i.classes.hasSubscribed),
+            (e.target.dataset.resolved = !0)),
+          this.status !== 200 && (e.target.classList.remove(i.classes.hasSubscribed), e.target.classList.add(i.classes.hasError)),
+          (e.target.dataset.pending = !1));
+      }),
+        r.open(a, t),
+        r.setRequestHeader('Content-Type', 'application/json'),
+        r.send(n);
+    }
+  };
+  var b = function (e, t) {
+    const a = e.checkValidity();
+    const n = A(e, i.classes.inputGroup);
+    if (a) return n.classList.remove(i.classes.isInValid), void n.classList.add(i.classes.isValid);
+    t && (n.classList.remove(i.classes.isValid), n.classList.add(i.classes.isInValid));
+  };
+  var y = function (e) {
+    let t;
+    const a = e.querySelectorAll(i.selectors.inputField);
+    let n = !!a.length;
+    for (t = 0; t < a.length; t++) {
+      a[t].checkValidity() || (n = !1);
+    }
+    return n;
+  };
+  var _ = function (e) {
+    let t;
+    const a = {};
+    const n = e.querySelectorAll(i.selectors.formField);
+    for (t = 0; t < n.length; t++) n[t].name !== 'optins' ? (a[n[t].name] = n[t].value) : (a.optins = [n[t].value]);
+    return JSON.stringify(a);
+  };
+  var E = function (e) {
+    A(e, i.classes.form).dataset.resolved = !1;
+  };
+  var A = function (e, t) {
+    for (; (e = e.parentElement) && !e.classList.contains(t); );
+    return e;
+  };
+})(window, window.document);
