@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{12951963-7132-4780-9124-053BCFD93634}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "List_Ripper", "List_Ripper\List_Ripper.csproj", "{BED1EB65-8FAB-44CF-8CC5-15C096806787}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12951963-7132-4780-9124-053BCFD93634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12951963-7132-4780-9124-053BCFD93634}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12951963-7132-4780-9124-053BCFD93634}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12951963-7132-4780-9124-053BCFD93634}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BED1EB65-8FAB-44CF-8CC5-15C096806787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BED1EB65-8FAB-44CF-8CC5-15C096806787}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BED1EB65-8FAB-44CF-8CC5-15C096806787}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BED1EB65-8FAB-44CF-8CC5-15C096806787}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
